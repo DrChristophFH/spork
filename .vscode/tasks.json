@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build for Web (Emscripten)",
+      "type": "shell",
+      "command": ".devcontainer/scripts/build.sh web",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "Build for Desktop",
+      "type": "shell",
+      "command": ".devcontainer/scripts/build.sh",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "Run Web Server",
+      "type": "shell",
+      "command": "python3 -m http.server",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
