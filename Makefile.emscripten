@@ -25,7 +25,7 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))
 
 CPPFLAGS = -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -Wall -Wformat -Os
 LDFLAGS = -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s NO_EXIT_RUNTIME=0 -s ASSERTIONS=1
-EMS = -s USE_SDL=2 -s DISABLE_EXCEPTION_CATCHING=1
+EMS = -s USE_SDL=2 -s DISABLE_EXCEPTION_CATCHING=1 -s FETCH=1
 
 USE_FILE_SYSTEM ?= 0
 ifeq ($(USE_FILE_SYSTEM), 0)
