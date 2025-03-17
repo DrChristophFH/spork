@@ -30,23 +30,7 @@
 #include <iostream>
 #include <string>
 
-std::string result = "";
-
-void fetchSucceeded(emscripten_fetch_t* fetch) {
-  std::string json(fetch->data, fetch->numBytes);
-  std::cout << "Received JSON: " << json << std::endl;
-
-  result = json;
-
-  // Remember to free the fetch object.
-  emscripten_fetch_close(fetch);
-}
-
-void fetchFailed(emscripten_fetch_t* fetch) {
-  std::cerr << "Fetch failed! HTTP status code: " << fetch->status << std::endl;
-
-  emscripten_fetch_close(fetch);
-}
+#include "components/rest.h"
 
 // Main code
 int main(int, char**) {
@@ -156,6 +140,8 @@ int main(int, char**) {
   bool show_another_window = false;
   ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+  HttpClient restClient = HttpClient();
+
   // Main loop
   bool done = false;
 #ifdef __EMSCRIPTEN__
@@ -215,21 +201,6 @@ int main(int, char**) {
       ImGui::SameLine();
       ImGui::Text("counter = %d", counter);
 
-      if (ImGui::Button("Test REST Fetch")) {
-        emscripten_fetch_attr_t attr;
-        emscripten_fetch_attr_init(&attr);
-
-        strcpy(attr.requestMethod, "GET");
-        attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
-        attr.onsuccess = fetchSucceeded;
-        attr.onerror = fetchFailed;
-
-        const char* url = "https://jsonplaceholder.typicode.com/todos/1";
-        emscripten_fetch(&attr, url);
-      }
-
-      ImGui::Text("Result: %s", result.c_str());
-
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
       ImGui::End();
     }
@@ -240,6 +211,10 @@ int main(int, char**) {
       ImGui::Text("Hello from another window!");
       if (ImGui::Button("Close Me")) show_another_window = false;
       ImGui::End();
+    }
+
+    if (restClient.shouldShow) {
+      restClient.RenderUI();
     }
 
     // Rendering
