@@ -24,17 +24,17 @@ IMGUI_SOURCES = \
 SOURCES = $(SRC_FILES) $(IMGUI_SOURCES)
 OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
 
-CPPFLAGS = -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(IMGUI_DIR)/misc/cpp -I$(SRC_DIR) -Wall -Wformat -Os
-LDFLAGS = -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s NO_EXIT_RUNTIME=0 -s ASSERTIONS=1
+CPPFLAGS = -g -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(IMGUI_DIR)/misc/cpp -I$(SRC_DIR) -Wall -Wformat -Os
+LDFLAGS = -g -gsource-map -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s NO_EXIT_RUNTIME=0 -s ASSERTIONS=1
 EMS = -s USE_SDL=2 -s DISABLE_EXCEPTION_CATCHING=1 -s FETCH=1
 
-USE_FILE_SYSTEM ?= 0
+USE_FILE_SYSTEM ?= 1
 ifeq ($(USE_FILE_SYSTEM), 0)
 	LDFLAGS += -s NO_FILESYSTEM=1
 	CPPFLAGS += -DIMGUI_DISABLE_FILE_FUNCTIONS
 endif
 ifeq ($(USE_FILE_SYSTEM), 1)
-	LDFLAGS += --no-heap-copy --preload-file ../../misc/fonts@/fonts
+	LDFLAGS += --no-heap-copy --preload-file $(IMGUI_DIR)/misc/fonts@/fonts
 endif
 
 CPPFLAGS += $(EMS)
