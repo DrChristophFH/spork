@@ -128,14 +128,13 @@ int main(int, char**) {
   // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
   // - Our Emscripten build process allows embedding fonts to be accessible at runtime from the "fonts/" folder. See Makefile.emscripten for details.
   ImFontConfig config = ImFontConfig();
-  config.RasterizerDensity = 4.0f;
+  config.RasterizerDensity = 2.0f;
   config.OversampleH = 1;
   config.OversampleV = 1;
   config.PixelSnapH = true;
-  io.Fonts->AddFontDefault(&config);
-  io.Fonts->AddFontFromFileTTF("/fonts/Cousine-Regular.ttf", 15.0f);
-  io.Fonts->AddFontFromFileTTF("/fonts/DroidSans.ttf", 16.0f);
-  io.Fonts->AddFontFromFileTTF("/fonts/Roboto-Medium.ttf", 16.0f);
+  ImFont *font = io.Fonts->AddFontFromFileTTF("/fonts/Cousine-Regular.ttf", 15.0f, &config);
+  // set font as default
+  io.FontDefault = font;
 
   // Our state
   bool show_demo_window = true;
