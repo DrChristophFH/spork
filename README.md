@@ -17,7 +17,7 @@ source emsdk_env.sh
 And then always when you want to build:
 
 ```bash
-make -f Makefile.emscripten serve
+make serve
 ```
 
 This will build the project and start a python web server at `http://localhost:8000` where you can see the result.
