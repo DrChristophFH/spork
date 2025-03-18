@@ -127,7 +127,12 @@ int main(int, char**) {
   // - Read 'docs/FONTS.md' for more instructions and details.
   // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
   // - Our Emscripten build process allows embedding fonts to be accessible at runtime from the "fonts/" folder. See Makefile.emscripten for details.
-  io.Fonts->AddFontDefault();
+  ImFontConfig config = ImFontConfig();
+  config.RasterizerDensity = 4.0f;
+  config.OversampleH = 1;
+  config.OversampleV = 1;
+  config.PixelSnapH = true;
+  io.Fonts->AddFontDefault(&config);
   io.Fonts->AddFontFromFileTTF("/fonts/Cousine-Regular.ttf", 15.0f);
   io.Fonts->AddFontFromFileTTF("/fonts/DroidSans.ttf", 16.0f);
   io.Fonts->AddFontFromFileTTF("/fonts/Roboto-Medium.ttf", 16.0f);
@@ -146,6 +151,12 @@ int main(int, char**) {
   // attempt to do a fopen() of the imgui.ini file. You may manually call
   // LoadIniSettingsFromMemory() to load settings from your own storage.
   io.IniFilename = nullptr;
+
+  // Load settings from the browser IndexedDB
+
+  ImGui::LoadIniSettingsFromMemory(NULL, 0);
+  
+  // emscripten main loop
   EMSCRIPTEN_MAINLOOP_BEGIN
 #else
   while (!done)

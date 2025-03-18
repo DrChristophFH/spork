@@ -14,6 +14,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     xorg-dev \
     libglfw3-dev \
     libsdl2-dev \
+    libfreetype6-dev \ 
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 

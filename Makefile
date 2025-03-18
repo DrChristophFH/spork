@@ -19,12 +19,13 @@ IMGUI_SOURCES = \
 	$(IMGUI_DIR)/imgui_widgets.cpp \
 	$(IMGUI_DIR)/backends/imgui_impl_sdl2.cpp \
 	$(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp \
-	$(IMGUI_DIR)/misc/cpp/imgui_stdlib.cpp
+	$(IMGUI_DIR)/misc/cpp/imgui_stdlib.cpp \
+	$(IMGUI_DIR)/misc/freetype/imgui_freetype.cpp
 
 SOURCES = $(SRC_FILES) $(IMGUI_SOURCES)
 OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
 
-CPPFLAGS = -g -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(IMGUI_DIR)/misc/cpp -I$(SRC_DIR) -Wall -Wformat -Os
+CPPFLAGS = -g -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(IMGUI_DIR)/misc/cpp -I$(SRC_DIR) -I/usr/include/freetype2 -Wall -Wformat -Os
 LDFLAGS = -g -gsource-map -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s NO_EXIT_RUNTIME=0 -s ASSERTIONS=1
 EMS = -s USE_SDL=2 -s DISABLE_EXCEPTION_CATCHING=1 -s FETCH=1
 
@@ -54,6 +55,9 @@ $(OBJ_DIR)/%.o: $(IMGUI_DIR)/backends/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 $(OBJ_DIR)/%.o: $(IMGUI_DIR)/misc/cpp/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
+
+$(OBJ_DIR)/%.o: $(IMGUI_DIR)/misc/freetype/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 all: $(EXE)
